@@ -2,9 +2,16 @@
 import re
 
 
-def main():
-    matches = re.finditer(r"mul\((?P<a>\d{1,3}),(?P<b>\d{1,3})\)", open("day_03_input.txt").read())
-    print('results :', sum([int(match.group('a')) * int(match.group('b')) for match in matches]))
+def sum_multiplied_pairs(content, enabled=False):
+    if enabled: content = re.sub(r"don\'t\(\).+?do\(\)", "", content, flags=re.DOTALL)
+    multiply_regex = r"mul\((?P<a>\d{1,3}),(?P<b>\d{1,3})\)"
+    return sum([int(match.group('a')) * int(match.group('b')) for match in re.finditer(multiply_regex, content)])
 
+
+def main():
+    content = open("day_03_input.txt").read()
+
+    print('multiplications :', sum_multiplied_pairs(content))
+    print('enabled multiplications :', sum_multiplied_pairs(content, True))
 
 main()
